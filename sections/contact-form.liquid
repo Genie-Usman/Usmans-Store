@@ -1,0 +1,97 @@
+<div class="flex flex-col items-center my-8">
+  {% form 'contact'
+      , article %}
+      <div class="flex-1 mx-auto items-center justify-center max-w-4xl px-4">
+        {% if form.errors %}
+          <div class="border p-5 mb-2">
+            <div class="flex flex-row items-center w-full my-3">
+              <div class="text-red-500">
+                {% render 'icon-failed' %}
+              </div>
+              <div class="text-sm font-medium ml-3">
+                Oh no! Something went wrong.
+              </div>
+            </div>
+            <ul class="px-4 mb-3 ml-7 list-decimal">
+              {% for error in form.errors %}
+                <li>
+                  <span>{{ form.errors.messages[error] }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% elsif form.posted_successfully? %}
+          <div class="flex flex-row items-center w-full my-3">
+            <div class="text-green-500">
+              {% render 'icon-success' %}
+            </div>
+            <div class="text-sm font-medium ml-3">
+              Message is sent scuccessfully.
+            </div>
+          </div>
+        {% endif %}
+        <div class="px-1 md:flex mb-3">
+          <div class="px-3 md:w-1/2">
+            <label for="contact_name" class="text-gray-700 font-medium uppercase text-xs mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              name="contact[name]"
+              id="contact_name"
+              class="w-full text-gray-700 border py-3 px-4 mb-3 focus:outline-none"
+              placeholder="Jane Doe"
+              required>
+          </div>
+          <div class="px-3 md:w-1/2">
+            <label for="contact_email" class="text-gray-700 font-medium uppercase text-xs mb-2">
+              Email
+            </label>
+            <input
+              type="text"
+              name="contact[email]"
+              id="contact_email"
+              class="w-full text-gray-700 border py-3 px-4 mb-3 focus:outline-none"
+              placeholder="jane@doe.com"
+              required>
+          </div>
+        </div>
+        <div class="px-1 md:flex mb-3">
+          <div class="md:w-full px-3">
+            <label for="contact_body" class="text-gray-700 font-medium uppercase text-xs mb-2">
+              Message
+            </label>
+            <textarea
+              name="contact[body]"
+              id="contact_body"
+              rows="5"
+              class="w-full text-gray-700 border resize-none h-20 py-2 px-3 focus:outline-none"
+              placeholder="Enter Your message here..."
+              required></textarea>
+          </div>
+        </div>
+        <div class="px-1 md:flex mb-3">
+          <div class="md:w-full px-3">
+            <input
+              type="submit"
+              class="w-full cursor-pointer px-4 py-2 border text-base font-medium text-white bg-gray-900 hover:bg-gray-500"
+              value="Send Message">
+          </div>
+        </div>
+      </div>
+
+    {% endform %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Contact Form",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Contact Form"
+      }
+    ]
+  }
+{% endschema %}

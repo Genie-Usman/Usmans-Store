@@ -1,0 +1,63 @@
+<div class="py-8">
+  {% paginate blog.articles by section.settings.number_of_articles %}
+    <h1 class="text-center text-3xl">{{ blog.title }}</h1>
+    <div class="max-2-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for article in blog.articles %}
+          <div class="w-full px-3 py-4">
+            <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+              <a href="{{article.url}}">
+                {% if article.image %}
+                  <img
+                    src="{{article.image |  image_url: width: 2000 }}"
+                    alt="{{article.image.alt}}"
+                    class="w-full h-80 object-cover"
+                    height="300"
+                    width="300">
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder w-full h-80 object-cover bg-gray-100' }}
+                {% endif %}
+              </a>
+              <h1 class="text-xl font-medium my-4 ml-5">{{ article.title }}</h1>
+              {% if article.excerpt.size > 0 %}
+                <p class="text-sm font-base my-4 ml-5">{{ article.excerpt | strip_html | truncatewords: 15 }}</p>
+              {% else %}
+                <p class="text-sm font-base my-4 ml-5">{{ article.content | strip_html | truncatewords: 15 }}</p>
+              {% endif %}
+
+              <div class="mb-5">
+                <a href="{{article.url}}" class="font-medium text-blue-600 hover:text-blue-800 ml-5">Read More</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto">
+      {% render 'pagination', paginate: paginate %}
+    </div>
+  {% endpaginate %}
+</div>
+
+{% schema %}
+  {
+    "name": "Blog",
+    "settings": [
+      {
+        "type": "text",
+        "id": "blog_read_more",
+        "label": "Read more label",
+        "default": "Read more"
+      }, {
+        "type": "range",
+        "id": "number_of_articles",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 3,
+        "label": "Number of articles to show per page"
+      }
+    ]
+  }
+{% endschema %}
