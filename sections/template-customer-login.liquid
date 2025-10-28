@@ -1,10 +1,22 @@
-<div class="h-full flex items-center justify-center py-12 px-6 md:px-4 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
+<div 
+  class="h-full flex items-center justify-center py-12 px-6 md:px-4 lg:px-8"
+  x-data="{ loginForm: true, pwRecoveryForm: false }"
+>
+  <!-- Sign In Form -->
+  <div x-show="loginForm" class="max-w-md w-full space-y-8">
     <div>
       <h1 class="text-center text-3xl font-bold mt-6">Sign in to your account</h1>
     </div>
+
     <div class="mt-8">
       {% form 'customer_login' %}
+        {% if form.errors %}
+          <div class="border border-red-400 bg-red-100 text-red-700 px-4 py-3 rounded-md" role="alert">
+            <strong class="font-bold">Login not successful!</strong>
+            <p class="block sm:inline">{{ form.errors | default_errors }}</p>
+          </div>
+        {% endif %}
+
         <div class="my-2">
           <label for="email_address" class="sr-only">Email Address</label>
           <input
@@ -12,8 +24,10 @@
             name="customer[email]"
             id="email_address"
             autocomplete="email"
-            class="relative block w-full px-3 py-2 border"
-            placeholder="Email Address">
+            class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-400"
+            placeholder="Email Address"
+            required
+          >
         </div>
 
         {% if form.password_needed %}
@@ -22,17 +36,76 @@
             <input
               type="password"
               name="customer[password]"
-              id="email_address"
+              id="password"
               autocomplete="current-password"
-              class="relative block w-full px-3 py-2 border"
-              placeholder="Password">
+              class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-400"
+              placeholder="Password"
+              required
+            >
           </div>
         {% endif %}
 
-        <div>
-            <button type="submit" class="relative cursor-pointer w-full py-2 px-4 text-sm font-medium text-white bg-gray-600 hover:bg-gray-900">
-                Sign in
-            </button>
+        <div class="text-end mt-4">
+          <a href="#" @click.prevent="loginForm = false; pwRecoveryForm = true" class=" text-sm text-gray-600 hover:text-gray-900">
+            Forgot your password?
+          </a>
+        </div>
+
+        <div class="flex justify-between items-center mt-4">
+          <button
+            type="submit"
+            class="cursor-pointer w-full py-2 px-4 text-sm font-medium text-white bg-gray-700 hover:bg-gray-900 rounded-md"
+          >
+            Sign in
+          </button>
+        </div>
+        
+
+      {% endform %}
+    </div>
+  </div>
+
+  <!-- Password Recovery Form -->
+  <div x-show="pwRecoveryForm" class="max-w-md w-full space-y-8">
+    <div>
+      <h1 class="text-center text-3xl font-bold mt-6">Recover your password</h1>
+    </div>
+
+    <div class="mt-8">
+      {% form 'recover_customer_password' %}
+        {% if form.errors %}
+          <div class="border border-red-400 bg-red-100 text-red-700 px-4 py-3 rounded-md" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <p class="block sm:inline">{{ form.errors | default_errors }}</p>
+          </div>
+        {% endif %}
+
+        <div class="my-2">
+          <label for="email" class="sr-only">Email Address</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            autocomplete="email"
+            class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-400"
+            placeholder="Email Address"
+            required
+          >
+        </div>
+
+        <div class="text-end mt-4">
+          <a href="#" @click.prevent="pwRecoveryForm = false; loginForm = true" class="text-sm text-gray-600 hover:text-gray-900">
+            Back to login
+          </a>
+        </div>
+
+        <div class="mt-4">
+          <button
+            type="submit"
+            class="cursor-pointer w-full py-2 px-4 text-sm font-medium text-white bg-gray-700 hover:bg-gray-900 rounded-md"
+          >
+            Recover Password
+          </button>
         </div>
       {% endform %}
     </div>
