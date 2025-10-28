@@ -1,0 +1,20 @@
+{% case media.media_type %}
+  {% when 'image' %}
+    <img
+      src="{{media | image_url: width: 2000 }}"
+      alt="{{media.preview_image.alt | escape}}"
+      width="300px"
+      height="300px"
+      class="w-full h-full object-cover" />
+    {% else %}
+
+    {% when 'external_video' %}
+    {{media |  external_video_tag: class: "w-full h-full object-cover" }}
+
+    {% when 'video' %}
+    {{media | video_tag: class: "w-full h-full object-cover", controls: true }}
+
+    {% else %}
+        {{ media |  media_tag: class: "w-full h-full object-cover" }}
+
+{% endcase %}
