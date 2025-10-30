@@ -63,6 +63,21 @@
 
       {% endform %}
     </div>
+
+    {% if shop.checkout.guest_login %}
+      <hr class="my-12">
+      <div class="mt-6 text-center text-3xl font-bold">OR</div>
+      {% form 'guest_login' %}
+        <div class="flex justify-between items-center mt-4">
+          <button
+            type="submit"
+            class="cursor-pointer w-full py-2 px-4 text-sm font-medium text-white bg-gray-700 hover:bg-gray-900 rounded-md"
+          >
+            Continue as a Guest
+          </button>
+        </div>
+      {% endform %}
+    {% endif %}
   </div>
 
   <!-- Password Recovery Form -->
