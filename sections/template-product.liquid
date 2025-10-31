@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css">
+<script src="{{'product-model.js' |  asset_url}}" defer></script>
+
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
 <style>
@@ -25,7 +28,11 @@
   .product--information {
     height: fit-content;
   }
+  
+ 
 </style>
+
+<div x-data="{productModalOpen: false}">
 
 <div class="max-w-6xl mx-auto my-8">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -34,7 +41,7 @@
       <!-- Desktop -->
       <div class="hidden md:block">
         {% for media in product.media %}
-          <div class="h-100 overflow-hidden p-2">
+          <div class="h-full overflow-hidden p-2">
             {% render 'product-media'
               , media: media %}
           </div>
@@ -154,6 +161,34 @@
       {% endform %}
     </div>
   </div>
+</div>
+
+<style>
+  #body model-viewer, #body > * {
+    display: block;
+    height: 90vh;
+    width: 100%;
+  }
+</style>
+
+<div id="productModelModal">
+    <div x-show="productModalOpen" class="w-full h-full z-50 items-center fixed inset-0">
+        <div class="relative w-full h-full bg-white">
+            <div class="relative">
+                <div class="flex justify-between items-start p-5 border-b">
+                    <h2 class="text-xl font-bold text-gray-700">3D Model Preview</h2>
+                    <button x-on:click="productModalOpen = false" class="text-gray-400 bg-transparent hover:text-gray-700 rounded text-sm p-2 ml-auto inline-flex items-center">
+                        {% render 'icon-close' %}
+                    </button>
+                </div>
+
+                <div id="body" class=" media block relative">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <script>
@@ -288,7 +323,7 @@
         "type": "checkout_buttons",
         "name": "Checkout Buttons",
         "limit": 1
-      },
+      }
     ]
 }
 {% endschema %}

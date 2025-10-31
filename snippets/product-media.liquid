@@ -1,3 +1,4 @@
+
 {% case media.media_type %}
   {% when 'image' %}
     <img
@@ -6,15 +7,38 @@
       width="300px"
       height="300px"
       class="w-full h-full object-cover" />
-    {% else %}
+  {% else %}
 
     {% when 'external_video' %}
-    {{media |  external_video_tag: class: "w-full h-full object-cover" }}
+      {{ media | external_video_tag: class: "w-full h-full object-cover" }}
 
     {% when 'video' %}
-    {{media | video_tag: class: "w-full h-full object-cover", controls: true }}
+      {{ media | video_tag: class: "w-full h-full object-cover", controls: true }}
+
+    {% when 'model' %}
+      <product-model data-media-id="{{media.id}}">
+        <div>
+          <button id="productModelOpenButton_{{media.id}}" x-on:click="productModalOpen = true" class="w-full h-full bg-gray-100 border relative">
+            <span class="border cursor-pointer transition-transform duration-200 border-gray-200 bg-gray-100 absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hover:scale-110">
+              {% render 'icon-model' %}
+            </span>
+
+            <img
+              src="{{ media | image_url: width: 2000 }}"
+              height="300px"
+              width="300px"
+              alt="{{ media.preview_image.alt }}"
+              class="block mx-auto md:w-full h-full w-[80%] object-cover md:object-fill rounded-lg" />
+
+          </button>
+        </div>
+
+        <template>
+          {{ media | model_viewer_tag: reveal: 'interaction' }}
+        </template>
+      </product-model>
 
     {% else %}
-        {{ media |  media_tag: class: "w-full h-full object-cover" }}
+      {{ media | media_tag: class: "w-full h-full object-cover" }}
 
-{% endcase %}
+  {% endcase %}
